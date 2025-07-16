@@ -1,0 +1,48 @@
+#! /bin/sh
+
+start(){
+    sudo virsh start fedora41
+}
+
+kill(){
+    sudo virsh shutdown fedora41
+}
+
+open_port(){
+    ssh -L 0.0.0.0:8096:192.168.122.140:8096 -N -f fedora@192.168.122.140
+    sudo firewall-cmd --add-port=8096/tcp
+}
+
+close_port(){
+    pkill -f "ssh -L 0.0.0.0:8096"
+    sudo firewall-cmd --remove-port=8096/tcp
+}
+
+help(){
+    echo "   -s               start kvm machine"
+    echo "   -o               open jellyfin port"
+    echo "   -c               close jellyfin port"
+    echo "   -v               shutdown kvm machine"
+    echo "   -h               prints this message"
+}   
+
+while getopts "skoch" option; do
+    case $option in
+	s)
+	    start
+	    ;;
+	o)
+	    open_port
+	    ;;
+        c)
+	    close_port
+	    ;;
+	k)
+	    kill
+	    ;;
+	h)
+	    help
+	    ;;
+	
+    esac
+done
