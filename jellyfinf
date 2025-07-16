@@ -22,7 +22,7 @@ help(){
     echo "   -s               start kvm machine"
     echo "   -o               open jellyfin port"
     echo "   -c               close jellyfin port"
-    echo "   -v               shutdown kvm machine"
+    echo "   -k               shutdown kvm machine"
     echo "   -h               prints this message"
 }   
 
