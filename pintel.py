@@ -19,22 +19,53 @@ def dir_loop(dir):
 
 args = sys.argv[1:]
 
-for arg in args:
+input_format = '.flac'
+output_format = '.mp3'
+directory = None
+
+i = 0
+while i < len(args):
+    arg = args[i]
+    
     if arg == '-h' or arg == '--help':
-        print("Usage: pintel <directory> <input_format>")
+        print("Pintel converts audio files")
+        print("Usage: pintel <directory> -i <input_format> -o <output_format>")
+        print("Default value for input_format = mp3 output_format = flac")
         sys.exit(0)
     elif arg == '-v' or arg == '--version':
         print(VERSION)
         sys.exit(0)
+    elif arg == '-i':
+        if i + 1 < len(args):
+            input_format = '.' + args[i + 1]
+            i += 1
+        else:
+            print("Error: -i requires an input format")
+            sys.exit(1)
+    elif arg == '-o':
+        if i + 1 < len(args):
+            output_format = '.' + args[i + 1]
+            i += 1
+        else:
+            print("Error: -o requires an output format")
+            sys.exit(1)
+    elif not arg.startswith('-'):
+        if directory is None:
+            directory = arg
+        else:
+            print("Error: Multiple directories specified")
+            sys.exit(1)
+    else:
+        print(f"Error: Unknown option {arg}")
+        sys.exit(1)
+    
+    i += 1
 
-if len(args) < 1:
-    print("Error: Not enough arguments provided.")
+if directory is None:
+    print("Error: No directory specified.")
     sys.exit(1)
 
-dir = os.path.abspath(args[0])
-input_format = '.' + args[1] if len(args) > 1 else '.flac'
-
-
+dir = os.path.abspath(directory)
 
 if os.path.isdir(dir):
     dir_loop(dir)
