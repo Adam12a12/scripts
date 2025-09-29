@@ -10,12 +10,13 @@ def dir_loop(dir):
             dir_loop(os.path.join(dir, obj))
         elif obj.endswith(input_format):
             original_path = os.path.join(dir, obj)
-            mp3_path = os.path.splitext(original_path)[0] + '.mp3'
-            if not os.path.exists(mp3_path):
-                cmd_exec = 'ffmpeg -i \"%s\" -ab 192k \"%s\"'   % (original_path, mp3_path)
-                print(f"Converting {original_path} to {mp3_path}")
+            output_path = os.path.splitext(original_path)[0] + output_format
+            if not os.path.exists(output_path):
+                cmd_exec = 'ffmpeg -i \"%s\" -ab 192k \"%s\"'   % (original_path, output_path)
+                print(f"Converting {original_path} to {output_path}")
                 os.system(cmd_exec)
-                os.remove(original_path)
+                if os.path.exists(output_path):
+                    os.remove(original_path)
 
 args = sys.argv[1:]
 
