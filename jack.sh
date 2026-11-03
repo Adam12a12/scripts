@@ -2,15 +2,16 @@
 set -euo pipefail
 
 usage() {
-  echo "Usage: $(basename "$0") <input.webm>" >&2
+  echo "Usage: $(basename "$0") <input.webm> [output.mp4]" >&2
   exit 1
 }
 
-[[ $# -ne 1 ]] && usage
+[[ $# -lt 1 || $# -gt 2 ]] && usage
 [[ $1 == -h || $1 == --help ]] && usage
 
 input=$1
 output="${input%.*}.mp4"
+[[ $# -eq 2 ]] && output=$2
 
 [[ -f $input ]] || { echo "Input not found: $input" >&2; exit 1; }
 
